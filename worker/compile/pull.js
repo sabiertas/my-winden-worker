@@ -7,11 +7,13 @@ const core = require('@actions/core');
     const worker_token = process.env['worker_token'];
     const route_pull = process.env['route_pull'];
     const entity = process.env['entity'];
+    const run_id = process.env['run_id'];
 
     axios
         .post(route_pull, {
             entity: entity,
             uuid: uuid,
+            run_id: run_id,
         }, {
             headers: {
                 'Worker-Token': worker_token

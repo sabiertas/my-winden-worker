@@ -36,6 +36,16 @@ class WorkerController extends AbstractController implements TokenAuthenticatedC
         /** @var Autocomplete|Compile $entity */
         $entity = $repository->findOneBy(['uuid' => $payload['uuid']]);
 
+        if (array_key_exists('run_id', $payload) && $payload['run_id'] !== null) {
+            $run = new Run();
+            $entity->setRun($run);
+            $run->setId($payload['run_id']);
+            $run->setStatus(RunStatus::InProgress);
+
+            $this->doctrine->getManager()->persist($run);
+            $this->doctrine->getManager()->flush();
+        }
+
         return $this->json([
             'data' => $entity,
         ], Response::HTTP_OK, [], [
@@ -53,10 +63,13 @@ class WorkerController extends AbstractController implements TokenAuthenticatedC
         /** @var Autocomplete|Compile $entity */
         $entity = $repository->findOneBy(['uuid' => $payload['uuid']]);
 
-        $run = new Run();
-        $entity->setRun($run);
+        $run = $entity->getRun();
 
-        $run->setId($payload['run_id']);
+        if ($run === null) {
+            $run = new Run();
+            $entity->setRun($run);
+            $run->setId($payload['run_id']);
+        }
 
         if ($payload['run_status'] && $payload['run_status'] === RunStatus::Success->value) {
             $run->setStatus(RunStatus::Success);

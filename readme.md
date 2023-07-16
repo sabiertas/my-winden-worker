@@ -8,7 +8,7 @@ A detailed guide on how to self-hosting winden worker can be found [https://web.
 
 ## Other projects
 
-- [Font Hero](https://dplugins.com/products/font-hero/) - The GDPR-friendly Font Plugin for WordPress 
+- [Yabe Webfont](http://webfont.yabe.land/) - The GDPR-friendly Font Plugin for WordPress 
 
 ## License
 
